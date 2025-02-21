@@ -2,8 +2,6 @@ package com.ixuea.courses.mymusic.activity;
 
 import android.content.Intent;
 
-import com.ixuea.courses.mymusic.component.guide.activity.GuideActivity;
-
 public class BaseCommonActivity extends BaseActivity {
 
     /**
@@ -11,7 +9,7 @@ public class BaseCommonActivity extends BaseActivity {
      *
      * @param clazz
      */
-    protected void startActivityAfterThis(Class<GuideActivity> clazz) {
+    protected void startActivityAfterThis(Class<?> clazz) {
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
         finish();

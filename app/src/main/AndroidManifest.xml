@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <!-- 启动界面 -->
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />

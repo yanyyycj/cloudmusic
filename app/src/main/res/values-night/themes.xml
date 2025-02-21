@@ -1,0 +1,13 @@
+<resources>
+    <!-- Base application theme. -->
+    <!--region Activity样式-->
+    <!--界面样式
+    背景：
+        白天：灰色
+        夜间：深黑-->
+    <style name="SuperUI.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--背景色-->
+        <item name="android:colorBackground">@color/black17</item>
+    </style>
+    <!--endregion-->
+</resources>

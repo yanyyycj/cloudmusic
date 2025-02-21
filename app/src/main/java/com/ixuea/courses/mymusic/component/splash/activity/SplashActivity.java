@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
+import com.ixuea.courses.mymusic.component.guide.activity.GuideActivity;
 import com.ixuea.courses.mymusic.component.splash.fragment.TermServiceDialogFragment;
 import com.ixuea.courses.mymusic.databinding.ActivitySplashBinding;
 import com.ixuea.courses.mymusic.util.DefaultPreferenceUtil;
@@ -76,8 +77,10 @@ public class SplashActivity extends BaseViewModelActivity<ActivitySplashBinding>
 
     private void prepareNext() {
         Log.d(TAG, "perpareNext: ");
-//        Intent intent = new Intent(this, GuideActivity.class);
-//        startActivity(intent);
+
+
+        startActivityAfterThis(GuideActivity.class);
     }
+
 
 }

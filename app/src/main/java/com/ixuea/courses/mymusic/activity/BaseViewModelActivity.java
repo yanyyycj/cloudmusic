@@ -23,4 +23,6 @@ public class BaseViewModelActivity<VB extends ViewBinding> extends BaseLogicActi
         binding = ReflectUtil.newViewBinding(getLayoutInflater(), this.getClass());
         setContentView(binding.getRoot());
     }
+
+
 }

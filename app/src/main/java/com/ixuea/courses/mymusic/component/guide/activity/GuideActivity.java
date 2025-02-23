@@ -23,14 +23,14 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
             setShowGuide();
 
         } else {
-            startActivityAfterThis(MainActivity.class);
+            startActivityAfterFinishThis(MainActivity.class);
             setShowGuide();
         }
 
     }
 
     private void setShowGuide() {
-
+        sp.setShowGuide(false);
     }
 
 }

@@ -1,7 +1,5 @@
 package com.ixuea.courses.mymusic.component.splash.fragment;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -22,6 +20,7 @@ import com.ixuea.superui.process.SuperProcessUtil;
 
 public class TermServiceDialogFragment extends BaseViewModelDialogFragment<FregmentDialogTermServiceBinding> {
 
+    private static final String TAG = "TermServiceDialogFragment";
     private View.OnClickListener onAgreementClickListener;
 
     public static TermServiceDialogFragment newInstance() {

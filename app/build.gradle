@@ -2,14 +2,18 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+//引入上层目录的common.gradle文件内容
+apply from: '../common.gradle'
+
+
 android {
     namespace 'com.ixuea.courses.mymusic'
-    compileSdk 35
+    //这些配置已经配置到common.gradle文件，所以这里就可以不写了
+    //如果不一样，这里可以在写要用到的配置，以覆盖公共配置文件内容
+    //compileSdk 35
 
     defaultConfig {
         applicationId "com.ixuea.courses.mymusic"
-        minSdk 24
-        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -21,10 +25,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
     }
 
     viewBinding {
@@ -41,6 +41,7 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.viewbinding
+    implementation project(':super_j')
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -49,6 +50,9 @@ dependencies {
     //https://github.com/permissions-dispatcher/PermissionsDispatcher
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
+
+    //api:依赖可以传递
+    implementation project(path: ':super_j')
 
     //UI框架，主要是用他的工具类，也可以单独拷贝出来
     //https://qmuiteam.com/android/get-started

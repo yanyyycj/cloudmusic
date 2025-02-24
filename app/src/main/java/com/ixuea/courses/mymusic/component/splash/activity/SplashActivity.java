@@ -101,6 +101,7 @@ public class SplashActivity extends BaseViewModelActivity<ActivitySplashBinding>
 
     }
 
+
     private void next() {
         startActivityAfterFinishThis(MainActivity.class);
     }

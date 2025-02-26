@@ -62,4 +62,8 @@ dependencies {
     //https://github.com/Tencent/MMKV
     implementation 'com.tencent:mmkv-static:1.2.13'
 
+    //圆形指示器
+    //https://github.com/ongakuer/CircleIndicator
+    implementation 'me.relex:circleindicator:2.1.6'
+
 }

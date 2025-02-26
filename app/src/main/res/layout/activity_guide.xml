@@ -5,6 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--左右滚动控件-->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!--指示器-->
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/guide_indicator_height"
+        ixuea:ci_drawable="@drawable/shape_color_primary"
+        ixuea:ci_drawable_unselected="@drawable/shape_circle_light_grey" />
+
 
     <!--按钮容器-->
     <LinearLayout

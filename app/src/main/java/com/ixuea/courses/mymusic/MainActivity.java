@@ -1,16 +1,20 @@
 package com.ixuea.courses.mymusic;
 
 
-import android.os.Bundle;
+import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
+import com.ixuea.courses.mymusic.component.login.activity.LoginHomeActivity;
+import com.ixuea.courses.mymusic.databinding.ActivityMainBinding;
+import com.ixuea.courses.mymusic.util.Constant;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends BaseViewModelActivity<ActivityMainBinding> {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void initDatum() {
+        super.initDatum();
+        String action = getIntent().getAction();
+        if (action == Constant.ACTION_LOGIN) {
+            startActivity(LoginHomeActivity.class);
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.ixuea.courses.mymusic.component.guide.activity;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.ixuea.courses.mymusic.MainActivity;
@@ -7,6 +8,7 @@ import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
 import com.ixuea.courses.mymusic.component.guide.adapter.GuideAdapter;
 import com.ixuea.courses.mymusic.databinding.ActivityGuideBinding;
+import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.SuperDarkUtil;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
@@ -73,7 +75,11 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.login_or_register) {
-            setShowGuide();
+            Intent intent = new Intent(getHostActivity(), MainActivity.class);
+            intent.setAction(Constant.ACTION_LOGIN);
+            startActivity(intent);
+            //setShowGuide();
+            finish();
 
         } else {
             startActivityAfterFinishThis(MainActivity.class);

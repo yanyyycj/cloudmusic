@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".AppContext"
@@ -13,7 +14,9 @@
         android:roundIcon="@drawable/login_netease_selected"
         android:supportsRtl="true"
         android:theme="@style/SuperUI.NoActionBar">
-
+        <activity
+            android:name=".component.login.activity.LoginHomeActivity"
+            android:exported="false" />
         <activity
             android:name=".component.splash.activity.SplashActivity"
             android:exported="true">
@@ -22,13 +25,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 启动界面 -->
-
+        </activity> <!-- 启动界面 -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".component.guide.activity.GuideActivity"
             android:exported="false" />

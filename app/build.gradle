@@ -52,7 +52,7 @@ dependencies {
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
     //api:依赖可以传递
-    implementation project(path: ':super_j')
+//    implementation project(path: ':super_j')
 
     //UI框架，主要是用他的工具类，也可以单独拷贝出来
     //https://qmuiteam.com/android/get-started
@@ -66,4 +66,5 @@ dependencies {
     //https://github.com/ongakuer/CircleIndicator
     implementation 'me.relex:circleindicator:2.1.6'
 
+//    android.buildFeatures.buildConfig true
 }

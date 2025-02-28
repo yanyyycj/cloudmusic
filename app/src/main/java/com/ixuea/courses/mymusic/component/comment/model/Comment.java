@@ -1,11 +1,12 @@
 package com.ixuea.courses.mymusic.component.comment.model;
 
 import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
+import com.ixuea.courses.mymusic.model.Common;
 
 /**
  * 评论模型
  */
-public class Comment {
+public class Comment extends Common {
     /**
      * 评论内容
      */
@@ -51,17 +52,7 @@ public class Comment {
      */
     private String feedId;
 
-    private String id;
 
-    /**
-     * 创建时间
-     */
-    private String createdAt;
-
-    /**
-     * 更新时间
-     */
-    private String updatedAt;
 
     public String getContent() {
         return content;
@@ -127,27 +118,5 @@ public class Comment {
         this.feedId = feedId;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

@@ -1,7 +1,7 @@
 package com.ixuea.courses.mymusic.component.api;
 
 import com.ixuea.courses.mymusic.AppContext;
-import com.ixuea.courses.mymusic.Config.Config;
+import com.ixuea.courses.mymusic.config.Config;
 import com.ixuea.courses.mymusic.util.JSONUtil;
 
 import java.util.concurrent.TimeUnit;

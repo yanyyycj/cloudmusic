@@ -1,4 +1,4 @@
-package com.ixuea.courses.mymusic.Config;
+package com.ixuea.courses.mymusic.config;
 
 import com.ixuea.courses.mymusic.BuildConfig;
 

@@ -1,12 +1,17 @@
 package com.ixuea.courses.mymusic.component.guide.activity;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import com.ixuea.courses.mymusic.MainActivity;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
+import com.ixuea.courses.mymusic.component.api.DefaultService;
+import com.ixuea.courses.mymusic.component.api.NetworkModule;
 import com.ixuea.courses.mymusic.component.guide.adapter.GuideAdapter;
+import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
+import com.ixuea.courses.mymusic.component.sheet.model.SheetWrapper;
 import com.ixuea.courses.mymusic.databinding.ActivityGuideBinding;
 import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.SuperDarkUtil;
@@ -15,9 +20,18 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+
 public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> implements View.OnClickListener {
 
     private GuideAdapter adapter;
+    String TAG = "tag";
+    private DefaultService service;
 
     @Override
     protected void initViews() {
@@ -36,9 +50,9 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
 
     protected void initDatum() {
         super.initDatum();
-//        OkHttpClient okHttpClient = NetworkModule.provideOkHttpClient();
-//        Retrofit retrofit = NetworkModule.provideRetrofit(okHttpClient);
-//        service = retrofit.create(DefaultService.class);
+        OkHttpClient okHttpClient = NetworkModule.provideOkHttpClient();
+        Retrofit retrofit = NetworkModule.provideRetrofit(okHttpClient);
+        service = retrofit.create(DefaultService.class);
 
         //创建适配器
         adapter = new GuideAdapter(getHostActivity(), getSupportFragmentManager());
@@ -82,11 +96,66 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
             finish();
 
         } else {
-            startActivityAfterFinishThis(MainActivity.class);
-            setShowGuide();
+            //startActivityAfterFinishThis(MainActivity.class);
+            //setShowGuide();
+            //gethttp();
+            testRetrofitGet();
         }
 
     }
+
+    /**
+     * retrofit get请求
+     */
+    private void testRetrofitGet() {
+        service.sheets(null, 2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SheetWrapper>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull SheetWrapper s) {
+                        Sheet sheet = s.getData().getData().get(0);
+                        Log.d(TAG, "onNext: " + sheet.getTitle());
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+//    private void gethttp() {
+//        OkHttpClient client = new OkHttpClient();
+//
+//        String url = Config.ENDPOINT + "v1/sheets";
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//                Log.e(TAG, "get error: " + e.getLocalizedMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//                Log.d(TAG, "get success: " + response.body().string());
+//            }
+//        });
+//    }
 
     private void setShowGuide() {
         sp.setShowGuide(false);

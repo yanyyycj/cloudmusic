@@ -15,7 +15,6 @@ import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
 import com.ixuea.courses.mymusic.databinding.ActivityGuideBinding;
 import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.SuperDarkUtil;
-import com.ixuea.superui.toast.SuperToast;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.util.ArrayList;
@@ -100,8 +99,18 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
             //startActivityAfterFinishThis(MainActivity.class);
             //setShowGuide();
             //gethttp();
-            testRetrofitGet();
-            SuperToast.success(R.string.about);
+            //testRetrofitGet();
+            //SuperToast.success(R.string.about);
+//            SuperRoundLoadingDialogFragment dialogFragment = SuperRoundLoadingDialogFragment.newInstance("..");
+//            dialogFragment.show(getSupportFragmentManager(),"SuperRoundLoadingDialogFragment");
+
+            showLoading(R.string.my_message);
+            binding.indicator.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideLoading();
+                }
+            }, 3000);
         }
 
     }

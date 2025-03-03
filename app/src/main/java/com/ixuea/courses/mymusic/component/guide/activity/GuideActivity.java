@@ -15,6 +15,7 @@ import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
 import com.ixuea.courses.mymusic.databinding.ActivityGuideBinding;
 import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.SuperDarkUtil;
+import com.ixuea.superui.toast.SuperToast;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
             //setShowGuide();
             //gethttp();
             testRetrofitGet();
+            SuperToast.success(R.string.about);
         }
 
     }

@@ -8,6 +8,7 @@ import com.ixuea.courses.mymusic.MainActivity;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
 import com.ixuea.courses.mymusic.component.api.DefaultService;
+import com.ixuea.courses.mymusic.component.api.HttpObserver;
 import com.ixuea.courses.mymusic.component.api.NetworkModule;
 import com.ixuea.courses.mymusic.component.guide.adapter.GuideAdapter;
 import com.ixuea.courses.mymusic.component.sheet.model.DetailResponse;
@@ -103,14 +104,30 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
             //SuperToast.success(R.string.about);
 //            SuperRoundLoadingDialogFragment dialogFragment = SuperRoundLoadingDialogFragment.newInstance("..");
 //            dialogFragment.show(getSupportFragmentManager(),"SuperRoundLoadingDialogFragment");
+//
+//            showLoading(R.string.my_message);
+//            binding.indicator.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    hideLoading();
+//                }
+//            }, 3000);
 
-            showLoading(R.string.my_message);
-            binding.indicator.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    hideLoading();
-                }
-            }, 3000);
+            service.sheetDetail("ixuea", "99987")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new HttpObserver<DetailResponse<Sheet>>() {
+                        @Override
+                        public void onSucceeded(DetailResponse<Sheet> data) {
+                            Log.d(TAG, "onSucceeded: " + data.getData().getTitle());
+                        }
+
+                        @Override
+                        public boolean onFailed(DetailResponse<Sheet> data, Throwable e) {
+                            Log.d(TAG, "onFailed: " + e.getLocalizedMessage());
+                            return true;
+                        }
+                    });
         }
 
     }

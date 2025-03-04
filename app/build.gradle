@@ -148,5 +148,8 @@ dependencies {
     //https://github.com/ongakuer/CircleIndicator
     implementation 'me.relex:circleindicator:2.1.6'
 
-//    android.buildFeatures.buildConfig true
+    //apache common lang3工具包
+    //提供了StringUtils等这样的类
+    //http://commons.apache.org/proper/commons-lang/
+    implementation 'org.apache.commons:commons-lang3:3.8'
 }

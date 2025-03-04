@@ -32,4 +32,7 @@ public class AppContext extends Application {
         //初始化toast工具类
         SuperToast.init(getApplicationContext());
     }
+
+    public void logout() {
+    }
 }

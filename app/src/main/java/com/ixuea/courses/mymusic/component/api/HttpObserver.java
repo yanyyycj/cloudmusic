@@ -2,9 +2,10 @@ package com.ixuea.courses.mymusic.component.api;
 
 import com.ixuea.courses.mymusic.component.observer.ObserverAdapter;
 import com.ixuea.courses.mymusic.component.sheet.model.BaseResponse;
-import com.ixuea.courses.mymusic.util.HttpUtil;
+import com.ixuea.courses.mymusic.util.ExceptionHandlerUtil;
 
-import okhttp3.Response;
+import retrofit2.Response;
+
 
 /**
  * 网络请求Observer
@@ -75,7 +76,7 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
             //返回true就表示外部手动处理错误
             //那我们框架内部就不用做任何事情了
         } else {
-            HttpUtil.handlerRequest(data, error);
+            ExceptionHandlerUtil.handlerRequest(data, error);
         }
     }
 

@@ -10,6 +10,12 @@
         <item name="android:colorBackground">@color/black17</item>
 
         <item name="colorLightWhite">@color/black183</item>
+
+        <!-- 分割线颜色 -->
+        <item name="colorDivider">@color/black33</item>
+
+        <!-- tab bar控件背景 -->
+        <item name="colorTabBar">@color/black31</item>
     </style>
     <!--endregion-->
 

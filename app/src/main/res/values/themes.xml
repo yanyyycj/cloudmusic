@@ -13,6 +13,13 @@
         <item name="colorPrimary">@color/primary</item>
 
         <item name="colorLightWhite">@color/white</item>
+
+
+        <!-- 分割线颜色 -->
+        <item name="colorDivider">@color/black183</item>
+
+        <!-- tab bar控件背景 -->
+        <item name="colorTabBar">@color/white</item>
     </style>
     <!--endregion-->
 

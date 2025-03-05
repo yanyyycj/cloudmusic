@@ -152,4 +152,8 @@ dependencies {
     //提供了StringUtils等这样的类
     //http://commons.apache.org/proper/commons-lang/
     implementation 'org.apache.commons:commons-lang3:3.8'
+
+    //类似TabLayout的控件
+    //https://github.com/H07000223/FlycoTabLayout
+    implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
 }

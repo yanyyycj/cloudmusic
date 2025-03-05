@@ -34,5 +34,6 @@ public class AppContext extends Application {
     }
 
     public void logout() {
+
     }
 }

@@ -1,9 +1,12 @@
 package com.ixuea.courses.mymusic.component.api;
 
+import com.ixuea.courses.mymusic.activity.BaseLogicActivity;
 import com.ixuea.courses.mymusic.component.observer.ObserverAdapter;
 import com.ixuea.courses.mymusic.component.sheet.model.BaseResponse;
+import com.ixuea.courses.mymusic.fregment.BaseLogicFragment;
 import com.ixuea.courses.mymusic.util.ExceptionHandlerUtil;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.Response;
 
 
@@ -11,6 +14,26 @@ import retrofit2.Response;
  * 网络请求Observer
  */
 public abstract class HttpObserver<T> extends ObserverAdapter<T> {
+
+    private final BaseLogicActivity activity;
+    private boolean isShowLoading;
+
+    public HttpObserver(BaseLogicActivity activity) {
+        super();
+        this.activity = activity;
+    }
+
+    public HttpObserver(BaseLogicActivity activity, boolean isShowLoading) {
+        super();
+        this.isShowLoading = isShowLoading;
+        this.activity = activity;
+    }
+
+    public HttpObserver(BaseLogicFragment fragment) {
+        super();
+        this.isShowLoading = true;
+        this.activity = (BaseLogicActivity) fragment.getHost();
+    }
 
     /**
      * 请求成功
@@ -35,7 +58,17 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
      * 请求结束，成功失败都会调用（调用前调用），使用在这里隐藏加载提示
      */
     public void onEnd() {
+        if (isShowLoading) {
+            activity.hideLoading();
+        }
+    }
 
+    @Override
+    public void onSubscribe(Disposable d) {
+        super.onSubscribe(d);
+        if (isShowLoading) {
+            activity.showLoading();
+        }
     }
 
     @Override

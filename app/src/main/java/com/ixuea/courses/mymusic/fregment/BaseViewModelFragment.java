@@ -10,7 +10,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.ixuea.superui.reflect.ReflectUtil;
 
-public abstract class BaseViewModelFragment<VB extends ViewBinding> extends BaseCommonFragment {
+public abstract class BaseViewModelFragment<VB extends ViewBinding> extends BaseLogicFragment {
     protected VB binding;
 
     @Override

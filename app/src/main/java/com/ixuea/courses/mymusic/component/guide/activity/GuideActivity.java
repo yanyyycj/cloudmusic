@@ -7,7 +7,6 @@ import com.ixuea.courses.mymusic.MainActivity;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
 import com.ixuea.courses.mymusic.component.api.DefaultService;
-import com.ixuea.courses.mymusic.component.api.NetworkModule;
 import com.ixuea.courses.mymusic.component.guide.adapter.GuideAdapter;
 import com.ixuea.courses.mymusic.databinding.ActivityGuideBinding;
 import com.ixuea.courses.mymusic.util.Constant;
@@ -16,9 +15,6 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> implements View.OnClickListener {
 
@@ -43,9 +39,9 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
 
     protected void initDatum() {
         super.initDatum();
-        OkHttpClient okHttpClient = NetworkModule.provideOkHttpClient();
-        Retrofit retrofit = NetworkModule.provideRetrofit(okHttpClient);
-        service = retrofit.create(DefaultService.class);
+//        OkHttpClient okHttpClient = NetworkModule.provideOkHttpClient();
+//        Retrofit retrofit = NetworkModule.provideRetrofit(okHttpClient);
+//        service = retrofit.create(DefaultService.class);
 
         //创建适配器
         adapter = new GuideAdapter(getHostActivity(), getSupportFragmentManager());

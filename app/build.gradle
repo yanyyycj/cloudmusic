@@ -156,4 +156,13 @@ dependencies {
     //类似TabLayout的控件
     //https://github.com/H07000223/FlycoTabLayout
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
+
+    //封装了RecyclerView
+    //提供更高层次的接口
+    //https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+    implementation 'io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.9'
+
+    //自动释放RxJava相关资源
+    //https://github.com/uber/AutoDispose
+    implementation "com.uber.autodispose2:autodispose-androidx-lifecycle:2.1.1"
 }

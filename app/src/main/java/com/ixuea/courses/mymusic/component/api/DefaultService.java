@@ -1,5 +1,6 @@
 package com.ixuea.courses.mymusic.component.api;
 
+import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.comment.model.Comment;
 import com.ixuea.courses.mymusic.component.sheet.model.DetailResponse;
 import com.ixuea.courses.mymusic.component.sheet.model.ListResponse;
@@ -37,4 +38,14 @@ public interface DefaultService {
      */
     @GET("v1/comments")
     Observable<ListResponse<Comment>> comments();
+
+
+    /**
+     * 广告列表
+     *
+     * @return
+     */
+    @GET("v1/ads")
+    Observable<ListResponse<Ad>> ads(@Query(value = "position") int position);
+
 }

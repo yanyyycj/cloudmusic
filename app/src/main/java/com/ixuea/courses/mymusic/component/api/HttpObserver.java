@@ -15,8 +15,12 @@ import retrofit2.Response;
  */
 public abstract class HttpObserver<T> extends ObserverAdapter<T> {
 
-    private final BaseLogicActivity activity;
+    private BaseLogicActivity activity;
     private boolean isShowLoading;
+
+    public HttpObserver() {
+        super();
+    }
 
     public HttpObserver(BaseLogicActivity activity) {
         super();

@@ -38,9 +38,7 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
 
     public HttpObserver(BaseLogicFragment fragment) {
         super();
-        this.isShowLoading = true;
         this.fragment = fragment;
-        this.activity = (BaseLogicActivity) fragment.getHost();
     }
 
     public HttpObserver(BaseLogicFragment fragment, boolean isShowLoading) {
@@ -76,6 +74,7 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
         if (isShowLoading) {
             activity.hideLoading();
         }
+
     }
 
     @Override

@@ -43,6 +43,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         //http://www.ixuea.com/courses/8
         binding.list.setHasFixedSize(true);
 
+        //设置列表展示方式，按行？按列？行列是？*？
         layoutManager = new LinearLayoutManager(getHostActivity());
         binding.list.setLayoutManager(layoutManager);
 
@@ -55,7 +56,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     protected void initDatum() {
         super.initDatum();
         //创建适配器
-        adapter = new DiscoverAdapter();
+        adapter = new DiscoverAdapter(this);
 
         //设置适配器
         binding.list.setAdapter(adapter);
@@ -72,7 +73,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         Observable<ListResponse<Ad>> ads = DefaultRepository.getInstance().bannerAd();
 
         ads
-                .to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))
+                .to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
                 .subscribe(new HttpObserver<ListResponse<Ad>>() {
                     @Override
                     public void onSucceeded(ListResponse<Ad> data) {

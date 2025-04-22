@@ -48,7 +48,7 @@ android {
             buildConfigField('String', "ENDPOINT", '"http://192.168.2.98:8080/"')
 
             //资源端点
-//            buildConfigField 'String', 'RESOURCE_ENDPOINT', '" /%s"'
+            buildConfigField 'String', 'RESOURCE_ENDPOINT', '" /%s"'
 
             //新资源地址
             buildConfigField 'String', 'RESOURCE_ENDPOINT', '"https://rs.ixuea.com/music/%s"'
@@ -165,4 +165,13 @@ dependencies {
     //自动释放RxJava相关资源
     //https://github.com/uber/AutoDispose
     implementation "com.uber.autodispose2:autodispose-androidx-lifecycle:2.1.1"
+
+    //banner轮播图框架
+    //https://github.com/youth5201314/banner
+    implementation 'io.github.youth5201314:banner:2.2.2'
+
+    //图片加载框架，还引用他目的是，coil有些功能不好实现
+    //https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.13.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.1'
 }

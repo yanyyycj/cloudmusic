@@ -88,7 +88,7 @@ public class GuideActivity extends BaseViewModelActivity<ActivityGuideBinding> i
             startActivityAfterFinishThis(MainActivity.class);
             setShowGuide();
 
-//            startActivityAfterFinishThis(MainActivity.class);
+//            startActivityAfterFinishThis(Main Activity.class);
 //            setShowGuide();
 //            gethttp();
 //            testRetrofitGet();

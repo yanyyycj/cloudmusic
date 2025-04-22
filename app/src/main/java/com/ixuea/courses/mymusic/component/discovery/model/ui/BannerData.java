@@ -6,6 +6,9 @@ import com.ixuea.courses.mymusic.util.Constant;
 
 import java.util.List;
 
+/**
+ * 发现界面，轮播图数据
+ */
 public class BannerData implements BaseMultiItemEntity {
     private List<Ad> data;
 

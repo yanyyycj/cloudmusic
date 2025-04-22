@@ -1,7 +1,10 @@
 package com.ixuea.courses.mymusic.activity;
 
+import android.view.View;
+
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.util.PreferenceUtil;
+import com.ixuea.courses.mymusic.view.PlaceholderView;
 import com.ixuea.superui.loading.SuperRoundLoadingDialogFragment;
 
 import java.lang.ref.WeakReference;
@@ -10,6 +13,7 @@ public class BaseLogicActivity extends BaseCommonActivity {
 
     protected PreferenceUtil sp;
     private WeakReference<SuperRoundLoadingDialogFragment> loadingWeakReference;
+    private PlaceholderView placeholderView;
 
     @Override
     protected void initDatum() {
@@ -69,5 +73,34 @@ public class BaseLogicActivity extends BaseCommonActivity {
         loadingWeakReference = null;
     }
 
+    /**
+     * 加载数据方法
+     *
+     * @param isPlaceholder 是否是通过placeholder控件触发的
+     */
+    protected void loadData(boolean isPlaceholder) {
 
+    }
+
+    /**
+     * 加载数据方法
+     */
+    protected void loadData() {
+        loadData(false);
+    }
+
+
+    public PlaceholderView getPlaceholderView() {
+        if (placeholderView == null) {
+            placeholderView = findViewById(R.id.placeholder);
+            placeholderView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadData(true);
+                }
+            });
+        }
+
+        return placeholderView;
+    }
 }

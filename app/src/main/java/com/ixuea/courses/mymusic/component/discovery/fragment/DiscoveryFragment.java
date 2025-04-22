@@ -76,7 +76,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
 
         ads
                 .to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
-                .subscribe(new HttpObserver<ListResponse<Ad>>() {
+                .subscribe(new HttpObserver<ListResponse<Ad>>(this) {
                     @Override
                     public void onSucceeded(ListResponse<Ad> data) {
                         datum.add(new BannerData(

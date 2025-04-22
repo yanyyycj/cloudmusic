@@ -5,6 +5,8 @@ import com.ixuea.courses.mymusic.component.observer.ObserverAdapter;
 import com.ixuea.courses.mymusic.component.sheet.model.BaseResponse;
 import com.ixuea.courses.mymusic.fregment.BaseLogicFragment;
 import com.ixuea.courses.mymusic.util.ExceptionHandlerUtil;
+import com.ixuea.courses.mymusic.view.PlaceholderView;
+import com.ixuea.superui.util.SuperViewUtil;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.Response;
@@ -15,6 +17,7 @@ import retrofit2.Response;
  */
 public abstract class HttpObserver<T> extends ObserverAdapter<T> {
 
+    private BaseLogicFragment fragment;
     private BaseLogicActivity activity;
     private boolean isShowLoading;
 
@@ -36,7 +39,15 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
     public HttpObserver(BaseLogicFragment fragment) {
         super();
         this.isShowLoading = true;
+        this.fragment = fragment;
         this.activity = (BaseLogicActivity) fragment.getHost();
+    }
+
+    public HttpObserver(BaseLogicFragment fragment, boolean isShowLoading) {
+        super();
+        this.fragment = fragment;
+        this.activity = (BaseLogicActivity) fragment.getActivity();
+        this.isShowLoading = isShowLoading;
     }
 
     /**
@@ -71,8 +82,22 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
     public void onSubscribe(Disposable d) {
         super.onSubscribe(d);
         if (isShowLoading) {
+            //显示加载对话框
             activity.showLoading();
         }
+
+        if (getPlaceholderView() != null) {
+            SuperViewUtil.gone(getPlaceholderView());
+        }
+    }
+
+    private PlaceholderView getPlaceholderView() {
+        if (activity != null) {
+            return activity.getPlaceholderView();
+        } else if (fragment != null) {
+            return fragment.getPlaceholderView();
+        }
+        return null;
     }
 
     @Override
@@ -113,7 +138,7 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
             //返回true就表示外部手动处理错误
             //那我们框架内部就不用做任何事情了
         } else {
-            ExceptionHandlerUtil.handlerRequest(data, error);
+            ExceptionHandlerUtil.handlerRequest(data, error, getPlaceholderView());
         }
     }
 

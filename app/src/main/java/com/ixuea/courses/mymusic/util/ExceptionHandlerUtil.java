@@ -6,6 +6,9 @@ import android.text.TextUtils;
 import com.ixuea.courses.mymusic.AppContext;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.model.response.BaseResponse;
+import com.ixuea.courses.mymusic.view.PlaceholderView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -28,11 +31,12 @@ public class ExceptionHandlerUtil {
      *
      * @param data
      * @param error
+     * @param placeholderView
      */
-    public static <T> void handlerRequest(T data, Throwable error) {
+    public static <T> void handlerRequest(T data, Throwable error, PlaceholderView placeholderView) {
         if (error != null) {
             //先处理有异常的请求
-            handleException(error);
+            handleException(error, placeholderView);
         } else {
             if (data instanceof Response) {
                 //retrofit里面的对象
@@ -47,7 +51,7 @@ public class ExceptionHandlerUtil {
                 if (code >= 200 && code <= 299) {
                     //网络请求正常
                 } else {
-                    handleHttpError(code);
+                    handleHttpError(code, placeholderView);
                 }
             } else if (data instanceof BaseResponse) {
                 //判断具体的业务请求是否成功
@@ -55,9 +59,9 @@ public class ExceptionHandlerUtil {
 
                 if (TextUtils.isEmpty(response.getMessage())) {
                     //没有错误提示信息
-                    TipUtil.showError(R.string.error_unknown);
+                    TipUtil.showError(R.string.error_unknown, placeholderView);
                 } else {
-                    TipUtil.showError(response.getMessage());
+                    TipUtil.showError(response.getMessage(), placeholderView);
                 }
             }
         }
@@ -66,31 +70,37 @@ public class ExceptionHandlerUtil {
     /**
      * 处理异常
      */
-    public static void handleException(Throwable error) {
-        if (error.getCause() != null) {
-            //如果发生这个异常有原因，就先判断原因
-            error = error.getCause();
-        }
+    public static void handleException(Throwable error, PlaceholderView placeholderView) {
+//        if (error.getCause() != null) {
+//            //如果发生这个异常有原因，就先判断原因
+//            error = error.getCause();
+//        }
 
         //判断错误类型
         if (error instanceof UnknownHostException) {
-            TipUtil.showError(R.string.error_network_unknown_host);
+            TipUtil.showError(R.string.error_network_unknown_host, placeholderView, R.string.network_error_click_reload);
         } else if (error instanceof ConnectException) {
-            TipUtil.showError(R.string.network_error);
+            TipUtil.showError(R.string.network_error, placeholderView, R.string.network_error_click_reload);
         } else if (error instanceof SocketTimeoutException) {
-            TipUtil.showError(R.string.error_network_timeout);
+            TipUtil.showError(R.string.error_network_timeout, placeholderView, R.string.error_network_timeout);
         } else if (error instanceof HttpException) {
             HttpException exception = (HttpException) error;
 
             //获取响应码
             int code = exception.code();
 
-            handleHttpError(code);
+            handleHttpError(code, placeholderView);
         } else if (error instanceof IllegalArgumentException) {
             //本地参数错误
-            TipUtil.showError(R.string.error_parameter);
+            TipUtil.showError(R.string.error_parameter, placeholderView);
         } else {
-            TipUtil.showError(response.getMessage());
+            String message = error.getLocalizedMessage();
+            if (StringUtils.isNotBlank(message)) {
+                message = AppContext.getInstance().getString(R.string.error_unknown_format, message);
+            } else {
+                message = AppContext.getInstance().getString(R.string.error_unknown);
+            }
+            TipUtil.showError(message, placeholderView);
         }
     }
 
@@ -99,19 +109,19 @@ public class ExceptionHandlerUtil {
      *
      * @param code
      */
-    private static void handleHttpError(int code) {
+    private static void handleHttpError(int code, PlaceholderView placeholderView) {
         if (code == 401) {
-            TipUtil.showError(R.string.error_network_not_auth);
+            TipUtil.showError(R.string.error_network_not_auth, placeholderView);
 
             AppContext.getInstance().logout();
         } else if (code == 403) {
-            TipUtil.showError(R.string.error_network_not_permission);
+            TipUtil.showError(R.string.error_network_not_permission, placeholderView);
         } else if (code == 404) {
-            TipUtil.showError(R.string.error_network_not_found);
+            TipUtil.showError(R.string.error_network_not_found, placeholderView);
         } else if (code >= 500) {
-            TipUtil.showError(R.string.error_network_server);
+            TipUtil.showError(R.string.error_network_server, placeholderView);
         } else {
-            TipUtil.showError(R.string.error_unknown);
+            TipUtil.showError(R.string.error_unknown, placeholderView);
         }
     }
 }

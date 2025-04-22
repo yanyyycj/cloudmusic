@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ixuea.courses.mymusic.MainActivity;
 import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.api.HttpObserver;
 import com.ixuea.courses.mymusic.component.discovery.adapter.DiscoverAdapter;
@@ -17,6 +18,7 @@ import com.ixuea.courses.mymusic.databinding.FragmentDiscoveryBinding;
 import com.ixuea.courses.mymusic.fregment.BaseViewModelFragment;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
 import com.ixuea.courses.mymusic.repository.DefaultRepository;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
 import io.reactivex.rxjava3.core.Observable;
 
-public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBinding> {
+public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBinding> implements OnBannerListener {
     /*
     列表数据集合
      */
@@ -56,7 +58,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     protected void initDatum() {
         super.initDatum();
         //创建适配器
-        adapter = new DiscoverAdapter(this);
+        adapter = new DiscoverAdapter(this, this);
 
         //设置适配器
         binding.list.setAdapter(adapter);
@@ -95,5 +97,17 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         DiscoveryFragment fragment = new DiscoveryFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    /**
+     * 轮播图点击
+     *
+     * @param data
+     * @param position
+     */
+    @Override
+    public void OnBannerClick(Object data, int position) {
+        ((MainActivity) getHostActivity()).processAdClick((Ad) data);
     }
 }

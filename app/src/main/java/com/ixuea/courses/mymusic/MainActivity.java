@@ -1,10 +1,13 @@
 package com.ixuea.courses.mymusic;
 
 
+import android.util.Log;
+
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.ixuea.courses.mymusic.activity.BaseViewModelActivity;
 import com.ixuea.courses.mymusic.adapter.OnPageChangeListenerAdapter;
+import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.login.activity.LoginHomeActivity;
 import com.ixuea.courses.mymusic.component.main.tab.TabEntity;
 import com.ixuea.courses.mymusic.component.main.tab.adapter.MainAdapter;
@@ -23,6 +26,7 @@ public class MainActivity extends BaseViewModelActivity<ActivityMainBinding> {
     private static final int[] indicatorTitles = new int[]{R.string.discovery, R.string.video, R.string.me, R.string.feed, R.string.live};
     private static final int[] indicatorIcons = new int[]{R.drawable.discovery, R.drawable.video, R.drawable.me, R.drawable.feed, R.drawable.live};
     private static final int[] indicatorSelectedIcons = new int[]{R.drawable.discovery_selected, R.drawable.video_selected, R.drawable.me_selected, R.drawable.feed_selected, R.drawable.live_selected};
+    private static final String TAG = "MainActivity";
     private MainAdapter adapter;
 
     @Override
@@ -90,5 +94,8 @@ public class MainActivity extends BaseViewModelActivity<ActivityMainBinding> {
             }
         });
     }
-    
+
+    public void processAdClick(Ad data) {
+        Log.d(TAG, "processAdClick:" + data.getIcon());
+    }
 }

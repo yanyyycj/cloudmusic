@@ -18,6 +18,7 @@ import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 
@@ -27,11 +28,14 @@ import java.util.ArrayList;
 public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEntity, BaseViewHolder> {
 
     private final Fragment fragment;
+    private final OnBannerListener onBannerListener;
 
-    public DiscoverAdapter(Fragment fragment) {
+    public DiscoverAdapter(Fragment fragment, OnBannerListener onBannerListener) {
         super(new ArrayList<>());
 
         this.fragment = fragment;
+        this.onBannerListener = onBannerListener;
+        
         //添加多类型布局
 
         //banner类型
@@ -72,6 +76,8 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
                 //添加生命周期观察者
                 bannerView.addBannerLifecycleObserver(fragment);
+
+                bannerView.setOnBannerListener(onBannerListener);
 
                 bannerView.setIndicator(new CircleIndicator(getContext()));
                 break;

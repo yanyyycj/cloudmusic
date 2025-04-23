@@ -8,4 +8,12 @@ public class SuperDateUtils {
         return Calendar.getInstance().get(Calendar.YEAR);
     }
 
+    /**
+     * 当前天
+     *
+     * @return
+     */
+    public static int currentDay() {
+        return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+    }
 }

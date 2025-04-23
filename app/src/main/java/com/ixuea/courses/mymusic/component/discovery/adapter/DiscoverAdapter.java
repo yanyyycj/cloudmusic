@@ -21,7 +21,9 @@ import com.ixuea.courses.mymusic.model.ui.IconTitleButtonData;
 import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.ImageUtil;
 import com.ixuea.courses.mymusic.util.ScreenUtil;
+import com.ixuea.courses.mymusic.util.SuperDateUtils;
 import com.ixuea.superui.util.DensityUtil;
+import com.ixuea.superui.util.SuperViewUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -113,6 +115,13 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
             binding = DiscoveryButtonBinding.inflate(LayoutInflater.from(getContext()));
             binding.icon.setImageResource(it.getIcon());
             binding.title.setText(it.getTitle());
+
+            if (it.getIcon() == R.drawable.day_recommend) {
+                SuperViewUtil.show(binding.more);
+
+                //显示日期
+                binding.more.setText(String.valueOf(SuperDateUtils.currentDay()));
+            }
 
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override

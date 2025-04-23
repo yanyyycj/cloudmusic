@@ -77,6 +77,7 @@ public abstract class HttpObserver<T> extends ObserverAdapter<T> {
 
     }
 
+    //开始网络请求前系统会自动调用onsubscribe方法
     @Override
     public void onSubscribe(Disposable d) {
         super.onSubscribe(d);

@@ -29,6 +29,7 @@
             </intent-filter>
         </activity> <!-- 启动界面 -->
         <activity
+            android:theme="@style/SuperUI.NoActionBar.Light"
             android:name=".MainActivity"
             android:exported="false" />
         <activity

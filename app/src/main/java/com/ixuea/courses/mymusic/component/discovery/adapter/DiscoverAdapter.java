@@ -1,6 +1,10 @@
 package com.ixuea.courses.mymusic.component.discovery.adapter;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,9 +14,13 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.discovery.model.ui.BannerData;
+import com.ixuea.courses.mymusic.databinding.DiscoveryButtonBinding;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
+import com.ixuea.courses.mymusic.model.ui.ButtonData;
+import com.ixuea.courses.mymusic.model.ui.IconTitleButtonData;
 import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.ImageUtil;
+import com.ixuea.courses.mymusic.util.ScreenUtil;
 import com.ixuea.superui.util.DensityUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
@@ -40,6 +48,9 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
         //banner类型
         addItemType(Constant.STYLE_BANNER, R.layout.item_discovery_banner);
+
+        //button类型
+        addItemType(Constant.STYLE_BUTTON, R.layout.item_discovery_button);
     }
 
 
@@ -58,10 +69,8 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
                 //banner
                 BannerData data = (BannerData) d;
 
-
                 // 找到控件
                 Banner bannerView = holder.getView(R.id.banner);
-
 
                 //设置数据
                 BannerImageAdapter<Ad> bannerImageAdapter = new BannerImageAdapter<Ad>(data.getData()) {
@@ -81,6 +90,39 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
                 bannerView.setIndicator(new CircleIndicator(getContext()));
                 break;
+            case Constant.STYLE_BUTTON:
+                //按钮
+                bindButtonData(holder, (ButtonData) d);
+                break;
+        }
+    }
+
+    private void bindButtonData(BaseViewHolder holder, ButtonData data) {
+        LinearLayout container = holder.getView(R.id.container);
+        if (container.getChildCount() > 0) {
+            return;
+        }
+
+        //横向显示5个半
+        float containerWidth = ScreenUtil.getScreenWith(container.getContext()) - DensityUtil.dip2px(container.getContext(), 10 * 2);
+        int itemWidth = (int) (containerWidth / 5.5);
+
+        DiscoveryButtonBinding binding;
+        LinearLayout.LayoutParams layoutParams;
+        for (IconTitleButtonData it : data.getData()) {
+            binding = DiscoveryButtonBinding.inflate(LayoutInflater.from(getContext()));
+            binding.icon.setImageResource(it.getIcon());
+            binding.title.setText(it.getTitle());
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            layoutParams = new LinearLayout.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            container.addView(binding.getRoot(), layoutParams);
         }
     }
 }

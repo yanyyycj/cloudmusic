@@ -4,8 +4,10 @@ import android.view.View;
 
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.util.PreferenceUtil;
+import com.ixuea.courses.mymusic.util.SuperDarkUtil;
 import com.ixuea.courses.mymusic.view.PlaceholderView;
 import com.ixuea.superui.loading.SuperRoundLoadingDialogFragment;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -14,6 +16,19 @@ public class BaseLogicActivity extends BaseCommonActivity {
     protected PreferenceUtil sp;
     private WeakReference<SuperRoundLoadingDialogFragment> loadingWeakReference;
     private PlaceholderView placeholderView;
+
+    @Override
+    protected void initViews() {
+        super.initViews();
+        if (SuperDarkUtil.isDark(this)) {
+            //状态栏文字白色
+            QMUIStatusBarHelper.setStatusBarDarkMode(this);
+        } else {
+            //状态栏文字黑色
+            QMUIStatusBarHelper.setStatusBarLightMode(this);
+        }
+    }
+
 
     @Override
     protected void initDatum() {

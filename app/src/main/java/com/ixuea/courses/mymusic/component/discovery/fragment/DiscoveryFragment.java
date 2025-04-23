@@ -17,6 +17,7 @@ import com.ixuea.courses.mymusic.component.sheet.model.ListResponse;
 import com.ixuea.courses.mymusic.databinding.FragmentDiscoveryBinding;
 import com.ixuea.courses.mymusic.fregment.BaseViewModelFragment;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
+import com.ixuea.courses.mymusic.model.ui.ButtonData;
 import com.ixuea.courses.mymusic.repository.DefaultRepository;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -82,6 +83,9 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
                         datum.add(new BannerData(
                                 data.getData().getData())
                         );
+
+                        //添加快捷按钮
+                        datum.add(new ButtonData());
 
                         //设置数据到适配器
                         adapter.setNewInstance(datum);

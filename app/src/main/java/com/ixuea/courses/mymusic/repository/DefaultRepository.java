@@ -4,6 +4,7 @@ import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.api.DefaultService;
 import com.ixuea.courses.mymusic.component.api.NetworkModule;
 import com.ixuea.courses.mymusic.component.sheet.model.ListResponse;
+import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
 import com.ixuea.courses.mymusic.util.Constant;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -63,5 +64,32 @@ public class DefaultRepository {
         return ads(Constant.VALUE0);
     }
 
+    /**
+     * 歌单列表
+     *
+     * @return
+     */
+    public Observable<ListResponse<Sheet>> sheets(String category) {
+        return sheets(category, Constant.SIZE10);
+    }
 
+    /**
+     * 歌单列表
+     *
+     * @return
+     */
+    public Observable<ListResponse<Sheet>> sheets(int size) {
+        return sheets(null, size);
+    }
+
+    /**
+     * 歌单列表
+     *
+     * @return
+     */
+    public Observable<ListResponse<Sheet>> sheets(String category, int size) {
+        return service.sheets(category, size)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

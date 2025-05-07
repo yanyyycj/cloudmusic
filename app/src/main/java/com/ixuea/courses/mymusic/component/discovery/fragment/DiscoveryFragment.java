@@ -14,11 +14,14 @@ import com.ixuea.courses.mymusic.component.api.HttpObserver;
 import com.ixuea.courses.mymusic.component.discovery.adapter.DiscoverAdapter;
 import com.ixuea.courses.mymusic.component.discovery.model.ui.BannerData;
 import com.ixuea.courses.mymusic.component.sheet.model.ListResponse;
+import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
 import com.ixuea.courses.mymusic.databinding.FragmentDiscoveryBinding;
 import com.ixuea.courses.mymusic.fregment.BaseViewModelFragment;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
 import com.ixuea.courses.mymusic.model.ui.ButtonData;
+import com.ixuea.courses.mymusic.model.ui.SheetData;
 import com.ixuea.courses.mymusic.repository.DefaultRepository;
+import com.ixuea.courses.mymusic.util.Constant;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -61,6 +64,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         //创建适配器
         adapter = new DiscoverAdapter(this, this);
 
+
         //设置适配器
         binding.list.setAdapter(adapter);
 
@@ -87,11 +91,31 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
                         //添加快捷按钮
                         datum.add(new ButtonData());
 
+                        //请求歌单数据
+                        loadSheetData();
+
                         //设置数据到适配器
                         adapter.setNewInstance(datum);
                     }
                 });
 
+    }
+
+    private void loadSheetData() {
+        //歌单API
+        Observable<ListResponse<Sheet>> sheets = DefaultRepository.getInstance().sheets(Constant.SIZE12);
+        sheets.to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
+                .subscribe(new HttpObserver<ListResponse<Sheet>>(this) {
+                    @Override
+                    public void onSucceeded(ListResponse<Sheet> data) {
+
+                        //添加歌单数据
+                        datum.add(new SheetData(data.getData().getData()));
+
+                        //设置数据到适配器
+                        adapter.setNewInstance(datum);
+                    }
+                });
     }
 
     public static DiscoveryFragment newInstance() {
@@ -114,4 +138,15 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     public void OnBannerClick(Object data, int position) {
         ((MainActivity) getHostActivity()).processAdClick((Ad) data);
     }
+
+
+//    @Override
+//    public void onSheetClick(Sheet data) {
+//        Log.d(TAG, "onSheetClick: " + data.getTitle());
+//    }
+//
+//    @Override
+//    public void onSheetMoreClick() {
+//
+//    }
 }

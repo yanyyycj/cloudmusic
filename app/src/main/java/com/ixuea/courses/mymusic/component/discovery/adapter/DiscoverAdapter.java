@@ -8,8 +8,12 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.component.ad.model.Ad;
@@ -18,10 +22,12 @@ import com.ixuea.courses.mymusic.databinding.DiscoveryButtonBinding;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
 import com.ixuea.courses.mymusic.model.ui.ButtonData;
 import com.ixuea.courses.mymusic.model.ui.IconTitleButtonData;
+import com.ixuea.courses.mymusic.model.ui.SheetData;
 import com.ixuea.courses.mymusic.util.Constant;
 import com.ixuea.courses.mymusic.util.ImageUtil;
 import com.ixuea.courses.mymusic.util.ScreenUtil;
 import com.ixuea.courses.mymusic.util.SuperDateUtils;
+import com.ixuea.superui.decoration.GridDividerItemDecoration;
 import com.ixuea.superui.util.DensityUtil;
 import com.ixuea.superui.util.SuperViewUtil;
 import com.youth.banner.Banner;
@@ -39,6 +45,7 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
     private final Fragment fragment;
     private final OnBannerListener onBannerListener;
+    private SheetAdapter sheetAdapter;
 
     public DiscoverAdapter(Fragment fragment, OnBannerListener onBannerListener) {
         super(new ArrayList<>());
@@ -53,6 +60,9 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
         //button类型
         addItemType(Constant.STYLE_BUTTON, R.layout.item_discovery_button);
+
+        //快捷歌单类型
+        addItemType(Constant.STYLE_SHEET, R.layout.item_discovery_sheet);
     }
 
 
@@ -96,7 +106,42 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
                 //按钮
                 bindButtonData(holder, (ButtonData) d);
                 break;
+            case Constant.STYLE_SHEET:
+                //歌单
+                bindSheetData(holder, (SheetData) d);
+                break;
         }
+    }
+
+    private void bindSheetData(BaseViewHolder holder, SheetData data) {
+        //设置标题，将标题放到每个具体的item上，好处是方便整体排序
+        holder.setText(R.id.title, R.string.day_recommend);
+
+        //显示更多容器
+        holder.setVisible(R.id.more, true);
+        holder.getView(R.id.more).setOnClickListener(v -> {
+
+        });
+
+
+        RecyclerView listView = holder.getView(R.id.list);
+        if (listView.getAdapter() == null) {
+            //设置显示3列
+            GridLayoutManager layoutManager = new GridLayoutManager(listView.getContext(), 3);
+            listView.setLayoutManager(layoutManager);
+
+            sheetAdapter = new SheetAdapter(R.layout.item_sheet);
+            sheetAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+
+                }
+            });
+            listView.setAdapter(sheetAdapter);
+            GridDividerItemDecoration itemDecoration = new GridDividerItemDecoration(getContext(), (int) DensityUtil.dip2px(getContext(), 5F));
+            listView.addItemDecoration(itemDecoration);
+        }
+        sheetAdapter.setNewInstance(data.getData());
     }
 
     private void bindButtonData(BaseViewHolder holder, ButtonData data) {
@@ -104,6 +149,7 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
         if (container.getChildCount() > 0) {
             return;
         }
+
 
         //横向显示5个半
         float containerWidth = ScreenUtil.getScreenWith(container.getContext()) - DensityUtil.dip2px(container.getContext(), 10 * 2);

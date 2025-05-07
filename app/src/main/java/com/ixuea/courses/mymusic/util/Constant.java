@@ -29,4 +29,8 @@ public class Constant {
     public static final int VALUE10 = 10;
     public static final int VALUE20 = 20;
     public static final int VALUE30 = 30;
+
+
+    public static final int SIZE12 = 12;
+    public static final int SIZE10 = 10;
 }

@@ -51,4 +51,12 @@
         <item name="android:colorBackground">@color/white</item>
     </style>
 
+    <!--ShapeableImageView样式-->
+    <!-- 圆角图片 -->
+    <style name="RoundedCornerImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_small</item>
+    </style>
+    <!--/ShapeableImageView样式-->
+
 </resources>

@@ -18,6 +18,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.discovery.model.ui.BannerData;
+import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
 import com.ixuea.courses.mymusic.databinding.DiscoveryButtonBinding;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
 import com.ixuea.courses.mymusic.model.ui.ButtonData;
@@ -46,6 +47,7 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
     private final Fragment fragment;
     private final OnBannerListener onBannerListener;
     private SheetAdapter sheetAdapter;
+    private DiscoveryAdapterListener discoveryAdapterListener;
 
     public DiscoverAdapter(Fragment fragment, OnBannerListener onBannerListener) {
         super(new ArrayList<>());
@@ -131,10 +133,13 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
             listView.setLayoutManager(layoutManager);
 
             sheetAdapter = new SheetAdapter(R.layout.item_sheet);
+
             sheetAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-
+                    if (discoveryAdapterListener != null) {
+                        discoveryAdapterListener.onSheetClick((Sheet) adapter.getItem(position));
+                    }
                 }
             });
             listView.setAdapter(sheetAdapter);
@@ -179,5 +184,23 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
             layoutParams = new LinearLayout.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
             container.addView(binding.getRoot(), layoutParams);
         }
+    }
+
+    public void setDiscoveryAdapterListener(DiscoveryAdapterListener discoveryAdapterListener) {
+        this.discoveryAdapterListener = discoveryAdapterListener;
+    }
+
+    public interface DiscoveryAdapterListener {
+        /**
+         * 歌单点击
+         *
+         * @param data
+         */
+        void onSheetClick(Sheet data);
+
+        /**
+         * 歌单更多点击
+         */
+        void onSheetMoreClick();
     }
 }

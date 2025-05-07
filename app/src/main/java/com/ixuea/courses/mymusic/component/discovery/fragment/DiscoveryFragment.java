@@ -3,6 +3,7 @@ package com.ixuea.courses.mymusic.component.discovery.fragment;
 import static autodispose2.AutoDispose.autoDisposable;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,10 +31,11 @@ import java.util.List;
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
 import io.reactivex.rxjava3.core.Observable;
 
-public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBinding> implements OnBannerListener {
+public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBinding> implements OnBannerListener, DiscoverAdapter.DiscoveryAdapterListener {
+    private static final String TAG = "DiscoveryFragment";
     /*
-    列表数据集合
-     */
+        列表数据集合
+         */
     private List<BaseMultiItemEntity> datum;
     private LinearLayoutManager layoutManager;
     private DiscoverAdapter adapter;
@@ -63,7 +65,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         super.initDatum();
         //创建适配器
         adapter = new DiscoverAdapter(this, this);
-
+        adapter.setDiscoveryAdapterListener(this);
 
         //设置适配器
         binding.list.setAdapter(adapter);
@@ -140,13 +142,13 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     }
 
 
-//    @Override
-//    public void onSheetClick(Sheet data) {
-//        Log.d(TAG, "onSheetClick: " + data.getTitle());
-//    }
-//
-//    @Override
-//    public void onSheetMoreClick() {
-//
-//    }
+    @Override
+    public void onSheetClick(Sheet data) {
+        Log.d(TAG, "onSheetClick: " + data.getTitle());
+    }
+
+    @Override
+    public void onSheetMoreClick() {
+
+    }
 }

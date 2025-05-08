@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ixuea.courses.mymusic.MainActivity;
+import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.api.HttpObserver;
 import com.ixuea.courses.mymusic.component.discovery.adapter.DiscoverAdapter;
@@ -25,6 +26,7 @@ import com.ixuea.courses.mymusic.model.ui.ButtonData;
 import com.ixuea.courses.mymusic.model.ui.SheetData;
 import com.ixuea.courses.mymusic.repository.DefaultRepository;
 import com.ixuea.courses.mymusic.util.Constant;
+import com.ixuea.superui.util.SuperDelayUtil;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     private List<BaseMultiItemEntity> datum;
     private LinearLayoutManager layoutManager;
     private DiscoverAdapter adapter;
+    private long startTime;
 
     @Override
     protected void initViews() {
@@ -60,6 +63,13 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         //分割线
         DividerItemDecoration decoration = new DividerItemDecoration(binding.list.getContext(), RecyclerView.VERTICAL);
         binding.list.addItemDecoration(decoration);
+
+
+        //刷新箭头颜色
+        binding.refresh.setColorSchemeResources(R.color.primary);
+
+        //刷新圆圈颜色
+        binding.refresh.setProgressBackgroundColorSchemeResource(R.color.white);
     }
 
     @Override
@@ -77,7 +87,31 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     }
 
     @Override
+    protected void initListeners() {
+        super.initListeners();
+//        binding.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                loadData();
+//            }
+//        });
+
+        binding.refresh.setOnRefreshListener(() -> loadData());
+    }
+
+    private void endRefresh() {
+        binding.refresh.setRefreshing(false);
+    }
+
+
+    @Override
     protected void loadData(boolean isPlaceholder) {
+        super.loadData(isPlaceholder);
+
+        //记录开始时间，目的是始终要当前界面最低延迟1秒在显示内容
+        //这样刷新效果才不至于一瞬间就没有了
+        startTime = System.currentTimeMillis();
+        
         datum = new ArrayList<>();
 
         //广告api
@@ -86,6 +120,12 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         ads
                 .to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
                 .subscribe(new HttpObserver<ListResponse<Ad>>(this) {
+                    @Override
+                    public boolean onFailed(ListResponse<Ad> data, Throwable e) {
+                        endRefresh();
+                        return super.onFailed(data, e);
+                    }
+
                     @Override
                     public void onSucceeded(ListResponse<Ad> data) {
                         datum.add(new BannerData(
@@ -111,6 +151,12 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         api.to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
                 .subscribe(new HttpObserver<ListResponse<Sheet>>(this) {
                     @Override
+                    public boolean onFailed(ListResponse<Sheet> data, Throwable e) {
+                        endRefresh();
+                        return super.onFailed(data, e);
+                    }
+
+                    @Override
                     public void onSucceeded(ListResponse<Sheet> data) {
 
                         //添加歌单数据
@@ -127,12 +173,33 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
         api.to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
                 .subscribe(new HttpObserver<ListResponse<Song>>(this) {
                     @Override
+                    public boolean onFailed(ListResponse<Song> data, Throwable e) {
+                        endRefresh();
+                        return super.onFailed(data, e);
+                    }
+                    @Override
                     public void onSucceeded(ListResponse<Song> data) {
                         datum.add(new SongData(data.getData().getData()));
                         //设置数据到适配器
-                        adapter.setNewInstance(datum);
+                        //结束时间
+                        long endTime = System.currentTimeMillis();
+
+                        //网络请求消耗的时间
+                        long consumeTime = endTime - startTime;
+
+                        if (consumeTime < 1000) {
+                            //小于1秒钟，要延迟
+                            SuperDelayUtil.delay(1000 - consumeTime, () -> show());
+                        } else {
+                            show();
+                        }
                     }
                 });
+    }
+
+    private void show() {
+        endRefresh();
+        adapter.setNewInstance(datum);
     }
 
     public static DiscoveryFragment newInstance() {

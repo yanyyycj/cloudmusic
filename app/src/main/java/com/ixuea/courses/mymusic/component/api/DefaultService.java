@@ -5,6 +5,7 @@ import com.ixuea.courses.mymusic.component.comment.model.Comment;
 import com.ixuea.courses.mymusic.component.sheet.model.DetailResponse;
 import com.ixuea.courses.mymusic.component.sheet.model.ListResponse;
 import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
+import com.ixuea.courses.mymusic.component.song.model.Song;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
@@ -48,4 +49,12 @@ public interface DefaultService {
     @GET("v1/ads")
     Observable<ListResponse<Ad>> ads(@Query(value = "position") int position);
 
+
+    /**
+     * 单曲
+     *
+     * @return
+     */
+    @GET("v1/songs")
+    Observable<ListResponse<Song>> songs();
 }

@@ -18,7 +18,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ixuea.courses.mymusic.R;
 import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.discovery.model.ui.BannerData;
+import com.ixuea.courses.mymusic.component.discovery.model.ui.SongData;
 import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
+import com.ixuea.courses.mymusic.component.song.model.Song;
 import com.ixuea.courses.mymusic.databinding.DiscoveryButtonBinding;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
 import com.ixuea.courses.mymusic.model.ui.ButtonData;
@@ -30,6 +32,7 @@ import com.ixuea.courses.mymusic.util.ScreenUtil;
 import com.ixuea.courses.mymusic.util.SuperDateUtils;
 import com.ixuea.superui.decoration.GridDividerItemDecoration;
 import com.ixuea.superui.util.DensityUtil;
+import com.ixuea.superui.util.SuperRecyclerViewUtil;
 import com.ixuea.superui.util.SuperViewUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
@@ -48,6 +51,7 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
     private final OnBannerListener onBannerListener;
     private SheetAdapter sheetAdapter;
     private DiscoveryAdapterListener discoveryAdapterListener;
+    private DiscoverySongAdapter songAdapter;
 
     public DiscoverAdapter(Fragment fragment, OnBannerListener onBannerListener) {
         super(new ArrayList<>());
@@ -65,6 +69,9 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
         //快捷歌单类型
         addItemType(Constant.STYLE_SHEET, R.layout.item_discovery_sheet);
+
+        //添加单曲类型
+        addItemType(Constant.STYLE_SONG, R.layout.item_discovery_sheet);
     }
 
 
@@ -112,17 +119,57 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
                 //歌单
                 bindSheetData(holder, (SheetData) d);
                 break;
+            case Constant.STYLE_SONG:
+                //歌单
+                bindSongData(holder, (SongData) d);
+                break;
         }
+    }
+
+    private void bindSongData(BaseViewHolder holder, SongData data) {
+        //设置标题，将标题放到每个具体的item上，好处是方便整体排序
+        holder.setText(R.id.title, R.string.recommend_song);
+        //显示更多容器
+        holder.setVisible(R.id.more, true);
+        holder.getView(R.id.more).setOnClickListener(v -> {
+            if (discoveryAdapterListener != null) {
+                discoveryAdapterListener.onSongMoreClick();
+            }
+        });
+
+        RecyclerView listView = holder.getView(R.id.list);
+        if (listView.getAdapter() == null) {
+            /*
+            封装工具类，用于代替
+            GridLayoutManager layoutManager = new GridLayoutManager(listView.getContext(), 3);
+            listView.setLayoutManager(layoutManager);
+            这样的代码
+             */
+            SuperRecyclerViewUtil.initVerticalLinearRecyclerView(listView, false);
+            songAdapter = new DiscoverySongAdapter(R.layout.item_discovery_song);
+
+            //item点击
+            songAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                    if (discoveryAdapterListener != null) {
+                        discoveryAdapterListener.onSongClick((Song) adapter.getItem(position));
+                    }
+                }
+            });
+            listView.setAdapter(songAdapter);
+        }
+        songAdapter.setNewInstance(data.getData());
+
     }
 
     private void bindSheetData(BaseViewHolder holder, SheetData data) {
         //设置标题，将标题放到每个具体的item上，好处是方便整体排序
-        holder.setText(R.id.title, R.string.day_recommend);
+        holder.setText(R.id.title, R.string.recommend_sheet);
 
         //显示更多容器
         holder.setVisible(R.id.more, true);
         holder.getView(R.id.more).setOnClickListener(v -> {
-
         });
 
 
@@ -202,5 +249,9 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
          * 歌单更多点击
          */
         void onSheetMoreClick();
+
+        void onSongMoreClick();
+
+        void onSongClick(Song data);
     }
 }

@@ -14,8 +14,10 @@ import com.ixuea.courses.mymusic.component.ad.model.Ad;
 import com.ixuea.courses.mymusic.component.api.HttpObserver;
 import com.ixuea.courses.mymusic.component.discovery.adapter.DiscoverAdapter;
 import com.ixuea.courses.mymusic.component.discovery.model.ui.BannerData;
+import com.ixuea.courses.mymusic.component.discovery.model.ui.SongData;
 import com.ixuea.courses.mymusic.component.sheet.model.ListResponse;
 import com.ixuea.courses.mymusic.component.sheet.model.Sheet;
+import com.ixuea.courses.mymusic.component.song.model.Song;
 import com.ixuea.courses.mymusic.databinding.FragmentDiscoveryBinding;
 import com.ixuea.courses.mymusic.fregment.BaseViewModelFragment;
 import com.ixuea.courses.mymusic.model.ui.BaseMultiItemEntity;
@@ -105,8 +107,8 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
 
     private void loadSheetData() {
         //歌单API
-        Observable<ListResponse<Sheet>> sheets = DefaultRepository.getInstance().sheets(Constant.SIZE12);
-        sheets.to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
+        Observable<ListResponse<Sheet>> api = DefaultRepository.getInstance().sheets(Constant.SIZE12);
+        api.to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
                 .subscribe(new HttpObserver<ListResponse<Sheet>>(this) {
                     @Override
                     public void onSucceeded(ListResponse<Sheet> data) {
@@ -114,6 +116,19 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
                         //添加歌单数据
                         datum.add(new SheetData(data.getData().getData()));
 
+                        loadSongData();
+                    }
+                });
+    }
+
+    private void loadSongData() {
+        //歌单API
+        Observable<ListResponse<Song>> api = DefaultRepository.getInstance().songs();
+        api.to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))//传入this能够自动监听当前fragment的生命周期，若fragment销毁，则会去销毁rxjava的引用防止内存泄漏
+                .subscribe(new HttpObserver<ListResponse<Song>>(this) {
+                    @Override
+                    public void onSucceeded(ListResponse<Song> data) {
+                        datum.add(new SongData(data.getData().getData()));
                         //设置数据到适配器
                         adapter.setNewInstance(datum);
                     }
@@ -150,5 +165,15 @@ public class DiscoveryFragment extends BaseViewModelFragment<FragmentDiscoveryBi
     @Override
     public void onSheetMoreClick() {
 
+    }
+
+    @Override
+    public void onSongMoreClick() {
+        Log.d(TAG, "onSongMoreClick");
+    }
+
+    @Override
+    public void onSongClick(Song data) {
+        Log.d(TAG, "onSongClick: " + data.getTitle());
     }
 }

@@ -72,6 +72,10 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
 
         //添加单曲类型
         addItemType(Constant.STYLE_SONG, R.layout.item_discovery_sheet);
+
+        //添加点击刷新
+        addItemType(Constant.STYLE_FOOTER, R.layout.item_discovery_footer);
+
     }
 
 
@@ -122,6 +126,11 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
             case Constant.STYLE_SONG:
                 //歌单
                 bindSongData(holder, (SongData) d);
+                break;
+
+            case Constant.STYLE_FOOTER:
+                holder.getView(R.id.refresh_button).setOnClickListener(v -> discoveryAdapterListener.onRefreshClick());
+                holder.getView(R.id.custom).setOnClickListener(v -> discoveryAdapterListener.onCustomDiscoveryClick());
                 break;
         }
     }
@@ -253,5 +262,12 @@ public class DiscoverAdapter extends BaseMultiItemQuickAdapter<BaseMultiItemEnti
         void onSongMoreClick();
 
         void onSongClick(Song data);
+
+        void onRefreshClick();
+
+        /**
+         * 自定义
+         */
+        void onCustomDiscoveryClick();
     }
 }

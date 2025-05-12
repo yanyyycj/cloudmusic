@@ -13,6 +13,7 @@ import com.ixuea.courses.mymusic.component.main.tab.TabEntity;
 import com.ixuea.courses.mymusic.component.main.tab.adapter.MainAdapter;
 import com.ixuea.courses.mymusic.databinding.ActivityMainBinding;
 import com.ixuea.courses.mymusic.util.Constant;
+import com.ixuea.courses.mymusic.util.StringUtil;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.util.ArrayList;
@@ -60,6 +61,8 @@ public class MainActivity extends BaseViewModelActivity<ActivityMainBinding> {
     protected void initDatum() {
         super.initDatum();
 
+        // showMessageUnreadCount(1000);
+
         adapter = new MainAdapter(getHostActivity(), getSupportFragmentManager());
         binding.list.setAdapter(adapter);
         adapter.setDatum(Arrays.asList(0, 1, 2, 3, 4));
@@ -74,6 +77,16 @@ public class MainActivity extends BaseViewModelActivity<ActivityMainBinding> {
     @Override
     protected void initListeners() {
         super.initListeners();
+
+        //打开侧滑按钮点击
+        binding.leftButton.setOnClickListener(v -> {
+        });
+
+        //搜索容器点击
+        binding.searchContainer.setOnClickListener(v -> {
+
+        });
+
         binding.indicator.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -94,6 +107,20 @@ public class MainActivity extends BaseViewModelActivity<ActivityMainBinding> {
             }
         });
     }
+
+
+    public void showMessageUnreadCount(Integer unReadCount) {
+        if (unReadCount > 0) {
+            String messageCount = StringUtil.formatMessageCount(unReadCount);
+
+            binding.indicator.showMsg(0, unReadCount);
+            binding.leftButton.showTextBadge(messageCount);
+        } else {
+            binding.indicator.hideMsg(0);
+            binding.leftButton.hiddenBadge();
+        }
+    }
+
 
     public void processAdClick(Ad data) {
         Log.d(TAG, "processAdClick:" + data.getIcon());

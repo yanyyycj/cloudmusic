@@ -176,4 +176,9 @@ dependencies {
     //https://github.com/bumptech/glide
     implementation 'com.github.bumptech.glide:glide:4.13.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.1'
+
+    //给控件添加未读消息数红点
+    //https://github.com/bingoogolapple/BGABadgeView-Android
+    implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'
+    annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'
 }

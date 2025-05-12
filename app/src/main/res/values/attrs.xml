@@ -8,5 +8,9 @@
 
     <!--定义一个颜色属性，用来设置TabBar背景-->
     <attr name="colorTabBar" format="color" />
+
+
+    <!--colorSurface点击颜色-->
+    <attr name="colorSurfaceClick" format="color" />
 </resources>
 
